@@ -1,5 +1,6 @@
 from django.test import TestCase
 from ingestion.parsers.utility_parser import parse_utility_csv
+from ingestion.parsers.sap_parser import parse_sap_csv
 
 
 class UtilityParserTest(TestCase):
@@ -18,3 +19,27 @@ class UtilityParserTest(TestCase):
         self.assertEqual(rows[0]["meter_number"], "M005")
         self.assertEqual(rows[0]["consumption"], 22000.0)
         self.assertEqual(rows[0]["facility_name"], "SF Office")
+
+
+class SapParserTest(TestCase):
+    def test_parse_german_csv(self):
+        csv_data = "Materialnummer,Materialkurztext,Werk,Menge,Einheit,Buchungsdatum,Belegnummer,Betrag,Währung,Kostenstelle,Materialgruppe\nMAT001,Diesel Low Sulfur,PLANT_A,1500.000,L,01.01.2024,DOC001,7500.00,EUR,CC100,FUELS\n"
+        rows = parse_sap_csv(csv_data)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["material_number"], "MAT001")
+        self.assertEqual(rows[0]["material_description"], "Diesel Low Sulfur")
+        self.assertEqual(rows[0]["plant_code"], "PLANT_A")
+        self.assertEqual(rows[0]["quantity"], 1500.0)
+
+    def test_parse_english_csv(self):
+        csv_data = "Material Number,Material Description,Plant,Quantity,UOM,Posting Date,Document Number,Amount,Currency,Cost Center,Material Group\nMAT002,Natural Gas,PLANT_B,5000.000,kg,15.01.2024,DOC002,2500.00,EUR,CC200,GAS\n"
+        rows = parse_sap_csv(csv_data)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["material_number"], "MAT002")
+        self.assertEqual(rows[0]["unit"], "kg")
+
+    def test_unit_normalization(self):
+        csv_data = "Menge,Einheit\n1000,Liter\n2000,Tons\n"
+        rows = parse_sap_csv(csv_data)
+        self.assertEqual(rows[0]["unit"], "L")
+        self.assertEqual(rows[1]["unit"], "t")
