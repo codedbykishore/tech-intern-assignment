@@ -1,6 +1,7 @@
 from django.test import TestCase
 from ingestion.parsers.utility_parser import parse_utility_csv
 from ingestion.parsers.sap_parser import parse_sap_csv
+from ingestion.parsers.travel_parser import parse_travel_csv
 
 
 class UtilityParserTest(TestCase):
@@ -43,3 +44,29 @@ class SapParserTest(TestCase):
         rows = parse_sap_csv(csv_data)
         self.assertEqual(rows[0]["unit"], "L")
         self.assertEqual(rows[1]["unit"], "t")
+
+
+class TravelParserTest(TestCase):
+    def test_auto_detect_category(self):
+        csv_data = "Employee,Vendor,Amount,Currency\nJohn Doe,Delta,500.00,USD\nJane Smith,Marriott,1200.00,USD\nBob Jones,Uber,45.00,USD\nAlice Williams,Hertz,350.00,USD\n"
+        rows = parse_travel_csv(csv_data)
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[0]["category"], "flight")
+        self.assertEqual(rows[1]["category"], "hotel")
+        self.assertEqual(rows[2]["category"], "rideshare")
+        self.assertEqual(rows[3]["category"], "car_rental")
+
+    def test_distance_conversion_miles(self):
+        csv_data = "Distance (mi)\n100\n"
+        rows = parse_travel_csv(csv_data)
+        self.assertAlmostEqual(rows[0]["distance_km"], 160.93, places=1)
+
+    def test_distance_conversion_km(self):
+        csv_data = "Distance (km)\n200\n"
+        rows = parse_travel_csv(csv_data)
+        self.assertAlmostEqual(rows[0]["distance_km"], 200.0)
+
+    def test_explicit_category(self):
+        csv_data = "Expense Type,Employee,Vendor,Amount\nFlight,John Doe,Delta,500.00\n"
+        rows = parse_travel_csv(csv_data)
+        self.assertEqual(rows[0]["category"], "flight")
