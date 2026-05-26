@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ImportBatch, UtilityRawRow, SapRawRow
+from .models import ImportBatch, UtilityRawRow, SapRawRow, TravelRawRow
 
 
 @admin.register(ImportBatch)
@@ -15,3 +15,8 @@ class UtilityRawRowAdmin(admin.ModelAdmin):
 @admin.register(SapRawRow)
 class SapRawRowAdmin(admin.ModelAdmin):
     list_display = ["batch", "row_index", "material_number", "material_description", "plant_code"]
+
+
+@admin.register(TravelRawRow)
+class TravelRawRowAdmin(admin.ModelAdmin):
+    list_display = ["batch", "row_index", "category", "employee_name", "vendor"]

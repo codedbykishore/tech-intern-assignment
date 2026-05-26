@@ -57,3 +57,30 @@ class SapRawRow(models.Model):
 
     class Meta:
         ordering = ["batch", "row_index"]
+
+
+class TravelRawRow(models.Model):
+    CATEGORY_CHOICES = [
+        ("flight", "Flight"),
+        ("hotel", "Hotel"),
+        ("car_rental", "Car Rental"),
+        ("rideshare", "Rideshare"),
+        ("train", "Train"),
+    ]
+
+    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="travel_rows")
+    row_index = models.IntegerField()
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, blank=True)
+    employee_name = models.CharField(max_length=200, blank=True)
+    vendor = models.CharField(max_length=200, blank=True)
+    origin = models.CharField(max_length=200, blank=True)
+    destination = models.CharField(max_length=200, blank=True)
+    departure_date = models.CharField(max_length=50, blank=True)
+    return_date = models.CharField(max_length=50, blank=True)
+    amount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    currency = models.CharField(max_length=10, blank=True)
+    distance_km = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    hotel_nights = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["batch", "row_index"]
