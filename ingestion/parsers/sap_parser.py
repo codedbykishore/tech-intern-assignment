@@ -87,9 +87,6 @@ def parse_sap_csv(csv_string):
             "cost_center": mapped.get("cost_center", ""),
             "material_group": mapped.get("material_group", ""),
         }
-        for k in mapped:
-            if k not in record:
-                record[f"raw_{k}"] = mapped[k]
         rows.append(record)
     return rows
 
