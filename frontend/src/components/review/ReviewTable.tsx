@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import api from '../../lib/api'
 import EmissionDetail from './EmissionDetail'
+import BulkActionBar from './BulkActionBar'
 
 interface Record {
   id: number
@@ -44,6 +45,7 @@ export default function ReviewTable() {
     setSelected(next)
   }
 
+  const queryClient = useQueryClient()
   const records: Record[] = data?.results || []
   const totalPages = data?.count ? Math.ceil(data.count / 50) : 1
 
@@ -103,6 +105,13 @@ export default function ReviewTable() {
             <option value="travel">Travel</option>
           </select>
         </div>
+
+        {selected.size > 0 && (
+          <BulkActionBar
+            selectedIds={Array.from(selected)}
+            onDone={() => { setSelected(new Set()); queryClient.invalidateQueries({ queryKey: ['emissions'] }) }}
+          />
+        )}
 
         {isLoading ? (
           <p className="text-gray-400 text-sm py-8 text-center">Loading records...</p>
