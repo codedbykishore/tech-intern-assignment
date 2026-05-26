@@ -38,3 +38,22 @@ class UtilityRawRow(models.Model):
 
     class Meta:
         ordering = ["batch", "row_index"]
+
+
+class SapRawRow(models.Model):
+    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="sap_rows")
+    row_index = models.IntegerField()
+    material_number = models.CharField(max_length=100, blank=True)
+    material_description = models.CharField(max_length=500, blank=True)
+    plant_code = models.CharField(max_length=100, blank=True)
+    quantity = models.DecimalField(max_digits=14, decimal_places=4, null=True, blank=True)
+    unit = models.CharField(max_length=20, blank=True)
+    posting_date = models.CharField(max_length=50, blank=True)
+    document_number = models.CharField(max_length=100, blank=True)
+    amount = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    currency = models.CharField(max_length=10, blank=True)
+    cost_center = models.CharField(max_length=100, blank=True)
+    material_group = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        ordering = ["batch", "row_index"]
