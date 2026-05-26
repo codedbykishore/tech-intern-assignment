@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: breathe-esg
+    env: docker
+    repo: https://github.com/yourusername/tech-intern-assignment
+    plan: free
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: "3.11"
