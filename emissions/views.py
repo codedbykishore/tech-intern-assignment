@@ -10,7 +10,7 @@ from .serializers import (
 
 
 class EmissionRecordViewSet(viewsets.ModelViewSet):
-    queryset = EmissionRecord.objects.select_related("reviewed_by", "locked_by")
+    queryset = EmissionRecord.objects.select_related("reviewed_by", "locked_by", "import_batch")
     serializer_class = EmissionRecordDetailSerializer
 
     def get_serializer_class(self):

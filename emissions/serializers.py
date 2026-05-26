@@ -25,6 +25,7 @@ class EmissionRecordDetailSerializer(serializers.ModelSerializer):
     audit_logs = AuditLogSerializer(many=True, read_only=True)
     reviewed_by_name = serializers.CharField(source="reviewed_by.username", read_only=True)
     locked_by_name = serializers.CharField(source="locked_by.username", read_only=True)
+    import_batch_filename = serializers.CharField(source="import_batch.filename", read_only=True, default=None)
 
     class Meta:
         model = EmissionRecord
