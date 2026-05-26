@@ -4,7 +4,7 @@ import api from '../../lib/api'
 import EmissionDetail from './EmissionDetail'
 import BulkActionBar from './BulkActionBar'
 
-interface Record {
+interface EmissionItem {
   id: number
   activity_type: string
   scope: number
@@ -46,7 +46,7 @@ export default function ReviewTable() {
   }
 
   const queryClient = useQueryClient()
-  const records: Record[] = data?.results || []
+  const records: EmissionItem[] = data?.results || []
   const totalPages = data?.count ? Math.ceil(data.count / 50) : 1
 
   const badgeClass = (val: string, map: Record<string, string>) =>
@@ -133,22 +133,22 @@ export default function ReviewTable() {
                 </tr>
               </thead>
               <tbody>
-                {records.map((r) => (
-                  <tr key={r.id} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer" onClick={() => setDetailId(r.id)}>
+                {records.map((item) => (
+                  <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer" onClick={() => setDetailId(item.id)}>
                     <td className="py-2" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
-                        checked={selected.has(r.id)}
-                        onChange={() => toggleSelect(r.id)}
+                        checked={selected.has(item.id)}
+                        onChange={() => toggleSelect(item.id)}
                       />
                     </td>
-                    <td className="py-2">{r.activity_type}</td>
-                    <td className="py-2">Scope {r.scope}</td>
-                    <td className="py-2">{parseFloat(r.co2e_amount).toLocaleString()}</td>
-                    <td className="py-2"><span className={badgeClass(r.status, statusColors)}>{r.status}</span></td>
-                    <td className="py-2">{r.flag !== 'none' && <span className={badgeClass(r.flag, flagColors)}>{r.flag}</span>}</td>
-                    <td className="py-2 text-gray-500">{r.activity_date_start || '-'}</td>
-                    <td className="py-2 capitalize">{r.source_type}</td>
+                    <td className="py-2">{item.activity_type}</td>
+                    <td className="py-2">Scope {item.scope}</td>
+                    <td className="py-2">{parseFloat(item.co2e_amount).toLocaleString()}</td>
+                    <td className="py-2"><span className={badgeClass(item.status, statusColors)}>{item.status}</span></td>
+                    <td className="py-2">{item.flag !== 'none' && <span className={badgeClass(item.flag, flagColors)}>{item.flag}</span>}</td>
+                    <td className="py-2 text-gray-500">{item.activity_date_start || '-'}</td>
+                    <td className="py-2 capitalize">{item.source_type}</td>
                   </tr>
                 ))}
               </tbody>
