@@ -1,0 +1,9 @@
+Employee,Expense Type,Vendor,Origin,Destination,Departure Date,Return Date,Amount,Currency,Distance (km),Hotel Nights
+Alice Johnson,Flight,Delta,JFK,LHR,10.01.2024,10.01.2024,850.00,USD,5570,
+Alice Johnson,Flight,United,SFO,ORD,05.02.2024,05.02.2024,420.00,USD,2970,
+Bob Smith,Hotel,Marriott,Chicago,,12.01.2024,15.01.2024,1200.00,USD,,3
+Bob Smith,Hotel,Hilton,New York,,01.02.2024,03.02.2024,900.00,USD,,2
+Carol Davis,Car Rental,Hertz,SFO,,20.01.2024,22.01.2024,350.00,USD,,2
+Carol Davis,Rideshare,Uber,SFO,,25.01.2024,,45.00,USD,15,
+David Wilson,Train,Amtrak,NYC,WAS,10.02.2024,10.02.2024,95.00,USD,362,
+Alice Johnson,Flight,Ryanair,STN,DUB,15.02.2024,15.02.2024,120.00,EUR,750,
