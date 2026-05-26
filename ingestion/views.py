@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import ImportBatch, UtilityRawRow, SapRawRow, TravelRawRow
 from .serializers import ImportBatchSerializer
 from .parsers import PARSER_MAP
+from organizations.mixins import get_user_org_ids
 
 ROW_MODEL_MAP = {
     "utility": UtilityRawRow,
@@ -20,6 +21,10 @@ class ImportBatchViewSet(viewsets.ModelViewSet):
     def upload(self, request):
         file = request.FILES.get("file")
         source_type = request.data.get("source_type")
+        org_id = request.data.get("org_id")
+        user_org_ids = get_user_org_ids(request.user)
+        if org_id and user_org_ids and int(org_id) not in user_org_ids:
+            return Response({"error": "unauthorized"}, status=403)
 
         if not file or not source_type:
             return Response(

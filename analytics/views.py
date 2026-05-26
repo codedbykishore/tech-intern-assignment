@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from emissions.models import EmissionRecord
+from organizations.mixins import get_user_org_ids
 
 
 @api_view(["GET"])
@@ -16,6 +17,10 @@ def dashboard(request):
     org_id = request.query_params.get("organization")
     if not org_id:
         return Response({"error": "organization parameter is required"}, status=400)
+
+    user_org_ids = get_user_org_ids(request.user)
+    if user_org_ids and int(org_id) not in user_org_ids:
+        return Response({"error": "unauthorized"}, status=403)
 
     records = EmissionRecord.objects.filter(organization_id=org_id)
 

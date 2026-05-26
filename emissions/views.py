@@ -7,9 +7,10 @@ from .serializers import (
     EmissionRecordDetailSerializer,
     EmissionRecordBulkActionSerializer,
 )
+from organizations.mixins import OrgFilterMixin
 
 
-class EmissionRecordViewSet(viewsets.ModelViewSet):
+class EmissionRecordViewSet(OrgFilterMixin, viewsets.ModelViewSet):
     queryset = EmissionRecord.objects.select_related("reviewed_by", "locked_by", "import_batch")
     serializer_class = EmissionRecordDetailSerializer
 
@@ -20,6 +21,7 @@ class EmissionRecordViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
+        qs = self.filter_by_org(qs)
         org_id = self.request.query_params.get("organization")
         if org_id:
             qs = qs.filter(organization_id=org_id)
