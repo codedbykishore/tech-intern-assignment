@@ -1,13 +1,14 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import ImportBatch, UtilityRawRow, SapRawRow
+from .models import ImportBatch, UtilityRawRow, SapRawRow, TravelRawRow
 from .serializers import ImportBatchSerializer
 from .parsers import PARSER_MAP
 
 ROW_MODEL_MAP = {
     "utility": UtilityRawRow,
     "sap": SapRawRow,
+    "travel": TravelRawRow,
 }
 
 
