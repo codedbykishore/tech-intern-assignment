@@ -1,4 +1,4 @@
-.PHONY: backend frontend backend-install frontend-install install dev help
+.PHONY: backend frontend backend-install frontend-install frontend-build install dev help
 
 VENV := .venv
 PYTHON := $(VENV)/bin/python
@@ -18,9 +18,13 @@ frontend-install:
 ## Install everything (backend + frontend)
 install: backend-install frontend-install
 
-## Run the Django development server
-backend:
+## Build frontend and run the Django development server (serves both)
+backend: frontend-build
 	$(PYTHON) manage.py runserver
+
+## Build frontend for production
+frontend-build:
+	@if [ -d frontend/node_modules ]; then cd frontend && npm run build; fi
 
 ## Run the frontend dev server
 frontend:

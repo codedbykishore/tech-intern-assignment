@@ -15,8 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
+from django.views.static import serve
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from pathlib import Path
+
+FRONTEND_DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,3 +31,10 @@ urlpatterns = [
     path("api/emissions/", include("emissions.urls")),
     path("api/analytics/", include("analytics.urls")),
 ]
+
+if FRONTEND_DIST.exists():
+    urlpatterns += [
+        re_path(r"^assets/(?P<path>.*)$", serve, {"document_root": FRONTEND_DIST / "assets"}),
+        re_path(r"^favicon\.svg$", serve, {"document_root": FRONTEND_DIST}),
+        re_path(r"^(?!api/|admin/).*", TemplateView.as_view(template_name="index.html")),
+    ]
