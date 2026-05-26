@@ -28,6 +28,9 @@ export default function UploadForm() {
       queryClient.invalidateQueries({ queryKey: ['import-batches'] })
       queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     },
+    onError: (err) => {
+      console.error('Upload failed:', err)
+    },
   })
 
   const handleDrop = (e: React.DragEvent) => {
@@ -124,7 +127,7 @@ export default function UploadForm() {
               </tr>
             </thead>
             <tbody>
-              {[...(batches || [])].reverse().map((b: any) => (
+              {[...(batches || [])].reverse().map((b: { id: number; source_type: string; filename: string; status: string; created_at: string }) => (
                 <tr key={b.id} className="border-b border-gray-100">
                   <td className="py-2 capitalize">{b.source_type}</td>
                   <td className="py-2">{b.filename}</td>

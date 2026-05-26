@@ -7,3 +7,4 @@ dist/
 .env
 .DS_Store
 docs/plans/
+test-results/

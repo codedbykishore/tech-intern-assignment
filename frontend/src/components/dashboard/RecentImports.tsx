@@ -16,10 +16,10 @@ interface Props {
 export default function RecentImports({ records }: Props) {
   const { data: batches } = useQuery({
     queryKey: ['import-batches'],
-    queryFn: () => api.get('/ingestion/batches/').then((r) => r.data),
+    queryFn: () => api.get('/ingestion/batches/').then((r) => r.data?.results || r.data || []),
   })
 
-  const recentBatches = (batches?.results || batches || []).slice(-5)
+  const recentBatches = (batches || []).slice(-5)
 
   return (
     <div className="space-y-6">
