@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import api from '../../lib/api'
-import StatsCards from './StatsCards'
+import { HeroCard, KPIGrid } from './StatsCards'
 import ScopeBreakdown from './ScopeBreakdown'
 import RecentImports from './RecentImports'
 
@@ -28,11 +28,22 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <StatsCards summary={data.summary} />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ScopeBreakdown data={data.scope_breakdown} />
-        <RecentImports records={data.recent_suspicious} />
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-4">
+          <HeroCard totalCo2eKg={data.summary.total_co2e_kg} />
+        </div>
+        <div className="col-span-12 lg:col-span-8">
+          <KPIGrid summary={data.summary} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-6">
+          <ScopeBreakdown data={data.scope_breakdown} />
+        </div>
+        <div className="col-span-12 lg:col-span-6">
+          <RecentImports records={data.recent_suspicious} />
+        </div>
       </div>
     </div>
   )
