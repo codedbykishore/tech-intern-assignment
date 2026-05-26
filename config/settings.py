@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "ingestion",
     "organizations",
     "emissions",
+    "analytics",
 ]
 
 MIDDLEWARE = [

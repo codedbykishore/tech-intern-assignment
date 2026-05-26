@@ -24,4 +24,5 @@ urlpatterns = [
     path("api/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/ingestion/", include("ingestion.urls")),
     path("api/emissions/", include("emissions.urls")),
+    path("api/analytics/", include("analytics.urls")),
 ]
