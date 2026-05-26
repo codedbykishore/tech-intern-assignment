@@ -21,3 +21,20 @@ class ImportBatch(models.Model):
 
     def __str__(self):
         return f"{self.source_type}: {self.filename} ({self.status})"
+
+
+class UtilityRawRow(models.Model):
+    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="utility_rows")
+    row_index = models.IntegerField()
+    meter_number = models.CharField(max_length=100, blank=True)
+    meter_read_date = models.CharField(max_length=50, blank=True)
+    billing_start_date = models.CharField(max_length=50, blank=True)
+    billing_end_date = models.CharField(max_length=50, blank=True)
+    consumption = models.DecimalField(max_digits=14, decimal_places=4, null=True, blank=True)
+    consumption_unit = models.CharField(max_length=20, blank=True)
+    tariff_name = models.CharField(max_length=200, blank=True)
+    total_cost = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    facility_name = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        ordering = ["batch", "row_index"]
